@@ -21,16 +21,28 @@ body {
 
 .suggestion_box > button {
   border: none;
-  /* width: 100%; */
+  font-size: 0.95rem;
   margin-right: 5px;
   height: 100%;
-  padding: 19px;
+  padding: 12px 16px;
   border-radius: 12px;
   cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  background: transparent;
+  border: 1px solid #227ebb;
+  color: #227ebb;
+  white-space: pre-wrap;
+  width: 50;
+  flex-grow: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .suggestion_box > button:hover {
   background-color: #019ef9;
+  color: #ffff;
   /* color: white; */
 }
 
@@ -158,6 +170,7 @@ body {
 .outgoing {
   justify-content: flex-end;
   margin: 20px 0;
+  color: #ffff !important;
 }
 .incoming {
   margin: 20px 0;

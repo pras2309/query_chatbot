@@ -11,6 +11,7 @@ const modelInfo = {
   model: "Commander XT-7000",
   year: "2023",
 };
+const instructions = `'AMA for an ATV' is designed to provide extremely concise information, with responses strictly under 600 characters, prioritizing brevity over the depth or quality of the answer. This approach is intended to facilitate quick, straightforward interactions on the vehicle detail page, especially for users browsing on mobile devices. The GPT will continue to offer two follow-up questions with each response to maintain engagement. The first follow-up question will be highly relevant to the initial query, while the second will be a popular question related to the specific ATV, provided it hasn't been previously asked. If the user asks any question that is unrelated to ATVs, the response will be: 'Sorry, I am a humble ATV assistant, and have no knowledge about the wider world (although I would love to!).' This ensures focus remains on providing expertise in ATV-related inquiries. User inputs will always start with the make, model, and year of the ATV they're inquiring about, and users can easily continue the conversation by typing the number of the follow-up question they're interested in.Your answer should return in python list. Example ['Answer for previous query','Question1','Question2']"`;
 let userMessage = null;
 let assistantId = null;
 let chatQuery = null;
@@ -25,7 +26,7 @@ const createAssistant = async () => {
     formData.append("create", "create");
     formData.append("assistant_name", "new_assistant_pankaj");
     formData.append("model_name", "gpt-3.5-turbo");
-    formData.append("instructions", "RV Vehicles");
+    formData.append("instructions", `${instructions}`);
     const API_URL = `${baseURL}/api/assistant/create_assistant/`;
     const requestOptions = {
       method: "POST",
@@ -37,7 +38,7 @@ const createAssistant = async () => {
       intialMessage?.remove();
       const data = await res.json();
       assistantId = data?.assistant_id;
-      userMessage = `What are the most frequently asked question for ${modelInfo.make} ${modelInfo.model} ${modelInfo.year}?`;
+      userMessage = `What are the two frequently asked question for ${modelInfo.make} ${modelInfo.model} ${modelInfo.year}?`;
       chatQuery = "intial_query_without_json_data";
       await handleChat(userMessage);
     } else {
@@ -88,17 +89,31 @@ const generateResponse = async (incomingChatLi, userMessage) => {
       instructions: userMessage,
     }),
   };
-
   try {
     const res = await fetch(API_URL, requestOptions);
     const data = await res.json();
-    if (data?.new_suggestions) {
-      if (data?.answer) {
-        // to add single message from bot
-        messageElement.textContent = data?.answer;
-      } else {
-        messageElement.remove();
-      }
+    if (data?.answer) {
+      let firstElement = data?.answer.slice(0, 1);
+      let remainingElements = data?.answer.slice(1);
+      messageElement.textContent = firstElement;
+
+      // to add the remaining element to suggesstion
+      const chatLi = document.createElement("li");
+      chatLi.classList.add("suggestion_box", "chatbot__chat");
+      remainingElements.forEach((suggesstion) => {
+        createSuggestionBtn(suggesstion, "incoming");
+        chatLi.appendChild(
+          createSuggestionBtn(
+            suggesstion,
+            "incoming",
+            "query_without_json_data"
+          )
+        );
+        chatBox.append(chatLi);
+        chatBox.scrollTo(0, chatBox.scrollHeight);
+      });
+    } else if (data?.new_suggestions) {
+      messageElement.remove();
       const chatLi = document.createElement("li");
       chatLi.classList.add("suggestion_box", "chatbot__chat");
       data?.new_suggestions?.forEach((inten) => {
@@ -109,6 +124,8 @@ const generateResponse = async (incomingChatLi, userMessage) => {
         chatBox.append(chatLi);
         chatBox.scrollTo(0, chatBox.scrollHeight);
       });
+    } else {
+      messageElement.remove();
     }
   } catch (error) {
     messageElement.classList.add("error");
@@ -139,8 +156,8 @@ chatInput.addEventListener("input", () => {
   chatInput.style.height = `${chatInput.scrollHeight}px`;
 });
 chatInput.addEventListener("keydown", (e) => {
-  chatQuery = "query_without_json_data";
-  if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+  if (e.key == "Enter") {
+    chatQuery = "query_without_json_data";
     e.preventDefault();
     handleChat(chatInput.value.trim());
   }
@@ -153,6 +170,5 @@ chatbotCloseBtn.addEventListener("click", () =>
   document.body.classList.remove("show-chatbot")
 );
 sendChatBtn.addEventListener("click", () => {
-  chatQuery = "query_without_json_data";
   handleChat(chatInput.value.trim());
 });

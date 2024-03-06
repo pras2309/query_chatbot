@@ -7,7 +7,7 @@ class ATVChatbot {
     this.sendChatBtn = document.querySelector(".chatbot__input-box span");
     this.chatInput = document.querySelector(".chatbot__textarea");
     this.chatBox = document.querySelector(".chatbot__box");
-    this.chatbotCloseBtn = document.querySelector(".chatbot__header span");
+    this.chatBotCloseBtn = document.querySelector(".chatbot__header span");
     this.baseURL = "http://127.0.0.1:8000";
     this.modelInfo = {
       make: this.make,
@@ -40,7 +40,7 @@ class ATVChatbot {
       document.body.classList.toggle("show-chatbot")
     );
 
-    this.chatbotCloseBtn.addEventListener("click", () =>
+    this.chatBotCloseBtn.addEventListener("click", () =>
       document.body.classList.remove("show-chatbot")
     );
 
@@ -53,7 +53,7 @@ class ATVChatbot {
 
   async createAssistant() {
     try {
-      const intialMessage = this.createChatLi("Thinking...", "incoming");
+      const intialMessage = this.createChatLiItem("Thinking...", "incoming");
       this.chatBox.appendChild(intialMessage);
 
       const formData = new FormData();
@@ -82,8 +82,8 @@ class ATVChatbot {
       console.error("An error occurred:", error);
     }
   }
-// change name
-  createSuggestionBtn(intent, className, queryType) {
+
+  createSuggestion(intent, className, queryType) {
     const suggestionBtn = document.createElement("button");
     suggestionBtn.classList.add("chatbot__chat", "intentBtn", className);
     suggestionBtn.innerText = intent;
@@ -94,8 +94,8 @@ class ATVChatbot {
     });
     return suggestionBtn;
   };
-// change name
-  createChatLi(message, className) {
+  
+  createChatLiItem(message, className) {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chatbot__chat", className);
     let chatContent =
@@ -134,9 +134,9 @@ class ATVChatbot {
         const chatLi = document.createElement("li");
         chatLi.classList.add("suggestion_box", "chatbot__chat");
         remainingElements.forEach((suggestion) => {
-          this.createSuggestionBtn(suggestion, "incoming");
+          this.createSuggestion(suggestion, "incoming");
           chatLi.appendChild(
-            this.createSuggestionBtn(
+            this.createSuggestion(
               suggestion,
               "incoming",
               "query_without_json_data"
@@ -151,9 +151,9 @@ class ATVChatbot {
         const chatLi = document.createElement("li");
         chatLi.classList.add("suggestion_box", "chatbot__chat");
         data?.new_suggestions?.forEach((intent) => {
-          this.createSuggestionBtn(intent, "incoming");
+          this.createSuggestion(intent, "incoming");
           chatLi.appendChild(
-            this.createSuggestionBtn(
+            this.createSuggestion(
               intent,
               "incoming",
               "query_without_json_data"
@@ -174,29 +174,17 @@ class ATVChatbot {
     }
   };
 
-  // to pop the form
-  showForm(noOfOutgoingMsg) {
-    if (noOfOutgoingMsg > 2) {
-      console.log("first");
-    }
-  }
-
   async handleChat(userMessage) {
-    var outgoingListItems = document.querySelectorAll(
-      ".chatbot__chat.outgoing"
-    );
-    var outgoingCount = outgoingListItems.length;
-    this.showForm(outgoingCount);
     this.chatInput.value = "";
     this.chatInput.style.height = `${this.inputInitHeight}px`;
 
     if (this.chatQuery != "intial_query_without_json_data") {
-      this.chatBox.appendChild(this.createChatLi(userMessage, "outgoing"));
+      this.chatBox.appendChild(this.createChatLiItem(userMessage, "outgoing"));
     }
     this.chatBox.scrollTo(0, this.chatBox.scrollHeight);
     setTimeout(() => {
       let incomingChatLi;
-      incomingChatLi = this.createChatLi("Thinking...", "incoming");
+      incomingChatLi = this.createChatLiItem("Thinking...", "incoming");
       this.chatBox.appendChild(incomingChatLi);
       this.chatBox.scrollTo(0, this.chatBox.scrollHeight);
       this.generateResponse(incomingChatLi, userMessage, this.assistantId);

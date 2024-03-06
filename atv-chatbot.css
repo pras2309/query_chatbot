@@ -12,7 +12,7 @@ body {
 }
 
 .intentBtn {
-  margin: 5px !important;
+  margin: 3px !important;
 }
 
 .suggestion_box {
@@ -29,10 +29,9 @@ body {
   cursor: pointer;
   font-family: "Poppins", sans-serif;
   background: transparent;
-  border: 1px solid #227ebb;
-  color: #227ebb;
+  border: 1px solid #c8511a;
+  color: #c8511a;
   white-space: pre-wrap;
-  width: 50;
   flex-grow: 1;
   text-align: center;
   display: flex;
@@ -41,9 +40,8 @@ body {
 }
 
 .suggestion_box > button:hover {
-  background-color: #019ef9;
+  background-color: #c8511a;
   color: #ffff;
-  /* color: white; */
 }
 
 .keyword_box {
@@ -75,7 +73,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #227ebb;
+  background: #c8511a;
   color: #f3f7f8;
   border: none;
   border-radius: 50%;
@@ -113,7 +111,7 @@ body {
 }
 .chatbot__header {
   position: relative;
-  background-color: #227ebb;
+  background-color: #c8511a;
   text-align: center;
   padding: 16px 0;
 }
@@ -142,18 +140,19 @@ body {
   max-width: 75%;
   font-size: 0.95rem;
   white-space: pre-wrap;
-  color: #202020;
-  background-color: #019ef9;
+  color: #2d2d2d;
+  background-color: #f6f6f6;
   border-radius: 10px 10px 0 10px;
   padding: 12px 16px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 }
 .chatbot__chat p.error {
   color: #721c24;
   background: #f8d7da;
 }
 .incoming p {
-  color: #202020;
-  background: #bdc3c7;
+  color: #2d2d2d;
+  background: #f6f6f6;
   border-radius: 10px 10px 10px 0;
 }
 .incoming span {
@@ -161,7 +160,7 @@ body {
   height: 32px;
   line-height: 32px;
   color: #f3f7f8;
-  background-color: #227ebb;
+  background-color: #c8511a;
   border-radius: 4px;
   text-align: center;
   align-self: flex-end;
@@ -182,7 +181,7 @@ body {
   display: flex;
   gap: 5px;
   align-items: center;
-  border-top: 1px solid #227ebb;
+  border-top: 1px solid #c8511a;
   background: #f3f7f8;
   padding: 5px 20px;
 }

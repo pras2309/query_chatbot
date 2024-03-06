@@ -8,7 +8,7 @@ class ATVChatbot {
     this.chatInput = document.querySelector(".chatbot__textarea");
     this.chatBox = document.querySelector(".chatbot__box");
     this.chatBotCloseBtn = document.querySelector(".chatbot__header span");
-    this.baseURL = "http://127.0.0.1:8000";
+    this.baseURL = "http://44.227.27.63:8000";
     this.modelInfo = {
       make: this.make,
       model: this.model,
@@ -94,7 +94,7 @@ class ATVChatbot {
     });
     return suggestionBtn;
   };
-  
+
   createChatLiItem(message, className) {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chatbot__chat", className);
